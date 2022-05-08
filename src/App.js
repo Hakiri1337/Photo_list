@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import ImgBox from "./components/ImgBox";
+import { useEffect, useState } from "react";
 function App() {
+  const [imagesData, setImagesData] = useState([]);
+  const [imagesCount, setImagesCount] = useState(3);
+
+  let url = "https://picsum.photos/v2/list";
+  const getData = () => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setImagesData(data.splice(0, imagesCount)));
+  };
+
+  const renderMoreImages = () => {
+    setImagesCount(imagesCount + 3);
+  };
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, [renderMoreImages]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <button onClick={renderMoreImages}>Next</button>
+      <div className="App">
+        {imagesData.map((item) => (
+          <ImgBox item={item} key={item.id} />
+        ))}
+      </div>
     </div>
   );
 }
