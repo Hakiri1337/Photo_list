@@ -3,13 +3,13 @@ import ImgBox from "./components/ImgBox";
 import { useEffect, useState } from "react";
 function App() {
   const [imagesData, setImagesData] = useState([]);
-  const [imagesCount, setImagesCount] = useState(3);
 
+  const [imagesCount, setImagesCount] = useState(3);
   let url = "https://picsum.photos/v2/list";
   const getData = () => {
     fetch(url)
       .then((res) => res.json())
-      .then((data) => setImagesData(data.splice(0, imagesCount)));
+      .then((data) => setImagesData(data));
   };
 
   const renderMoreImages = () => {
@@ -25,7 +25,7 @@ function App() {
     <div className="container">
       <button onClick={renderMoreImages}>Next</button>
       <div className="App">
-        {imagesData.map((item) => (
+        {imagesData.splice(0, imagesCount).map((item) => (
           <ImgBox item={item} key={item.id} />
         ))}
       </div>
